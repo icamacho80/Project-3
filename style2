@@ -1,0 +1,48 @@
+/* General body styles */
+body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9; /* Light background color */
+}
+
+/* Grid container styles */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr; /* Single column layout */
+    gap: 20px; /* Space between grid items */
+    padding: 20px;
+    max-width: 1200px; /* Max width for the grid */
+    margin: auto; /* Center the grid */
+}
+
+/* Individual gridstyles */
+.grid-item {
+    background-color: #ffffff; /* White background for items */
+    border: 1px solid #ccc; /* Light gray border */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 15px; /* Padding inside items */
+    text-align: center; /* Center text */
+    transition: transform 0.2s; /* Smooth transition for hover effect */
+}
+
+/* Hover effect for grid items */
+.grid-item:hover {
+    transform: scale(1.02); /* Slightly enlarge on hover */
+}
+
+/* Map styles */
+.map {
+    height: 400px; /* Set the height of the map */
+    width: 100%; /* Full width */
+    border-radius: 8px; /* Rounded corners for the map */
+    overflow: hidden; /* Hide overflow */
+}
+
+/* Responsive styles */
+@media (max-width: 768px) {
+    .grid-container {
+    grid-template-columns: 1fr; /* Stack items on smaller screens */
+    } 
+}

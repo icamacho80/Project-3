@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Web Build by Dhani
+     Project 3 Data Engineering
+
+     Gender Mapping Main Page
+
+     Multi page Build open for future editing-->
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Maps in Grid</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mapstyles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">P3</div>
+            <ul>
+                <li><a href="p3index.html">Home</a></li>
+                <li>
+                    <a href="gender.html">Gender</a> <!-- summary of genders in data, percentages, -->
+                    <ul class="dropdown">
+                        <li><a href="g1.html">Gender v Age</a></li>
+                        <li><a href="g2.html">Gender v Brand</a></li>
+                        <li><a href="g3.html">Gender v Product</a></li>
+                        <li><a href="g4.html">Gender v Income</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="income.html">Income</a><!--synapsis of data set and how income is portrayed, groupings, percentages across each income level, -->
+                    <ul class="dropdown">
+                        <li><a href="in1.html">Income v Age</a></li>
+                        <li><a href="in2.html">Income v Brand</a></li>
+                        <li><a href="in3.html">Income v Product</a></li> <!-- Maps showing Product Type per Income,-->
+                        <li><a href="in4.html">Income v Location</a></li>
+                    </ul>
+                </li>
+                <li><a href="location.html">Location</a>
+                <ul class="dropdown">
+                    <li><a href="l1.html">Location v Age</a></li>
+                    <li><a href="l2.html">Location v Brand</a></li> <!-- Individual HeatMaps Showing for Apple, Samsung, Sony, Other-->
+                    <li><a href="l3.html">Location v Product</a></li> <!--PLace maps showing Product Type, Units Per PT-->
+                    <li><a href="l4.html"></a></li>
+                </ul>
+            </li>
+        </nav>
+    
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>Sales Differences Across the United States </h2>
+            <h3> Male v Female</h3>
+            <p>When initially analyzing our dataset, we found that there was a clear distinction among the records made to categorize whether the purchases being recorded were made by people of the male or female gender variety. Seeing this, we wanted to compare numberes based form the records to see if there was a significant difference between the two.</p>
+            <p>We hypothesized that because of the technology field being male dominant, there would be a significant gap in purchase totals, with an exceptional margin in states with a higher tech industry presence. Through conducting our data studies, we found ot only was there a significance in male-made purchases overall, but there was also a varying degree of difference to male v female depending on the brand on record, for whic we have three major ones; Sony, Samsung, and Apple.</p>
+            <div id="map1" class="map"></div>
+            </div>
+            <div class="grid-item">
+                <h2>Map 2</h2>
+                <div id="map2" class="map"></div>
+            </div>
+    </div>
+
+    <!-- Javascript Section -->
+
+    <script src="gender2state.js"></script>
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script src="https://unpkg.com/leaflet-heat/dist/leaflet-heat.js"></script> <!-- Include heatmap library -->
+    <script>
+        // Initialize the first map
+        var map1 = L.map('map1').setView([37.0902, -95.7129], 4); // Set initial view to the USA
+    
+        // Add OpenStreetMap tile layer to the first map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map1);
+    
+        // Prepare heatmap data
+        const heatDataW = [];
+    
+        // Loop through w_by_state and create heatmap points
+        w_by_state.forEach(data => {
+            const { lat, lon, women } = data;
+            // Push the coordinates multiplied by the number of women to create a heatmap effect
+            for (let i = 0; i < women; i++) { // Adjust the divisor to scale the points
+                heatDataW.push([lat, lon]);
+            }
+        });
+    
+        // Create heatmap layer
+        L.heatLayer(heatDataW, { radius: 25 }).addTo(map1);
+    
+        // Initialize the second map
+        var map2 = L.map('map2').setView([37.0902, -95.7129], 4);
+    
+        // Add OpenStreetMap tile layer to the second map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map2);
+    
+        // Markers for men and women by total
+        let sales_men = [];
+        let sales_women = [];
+    
+        const menLayer = L.layerGroup().addTo(map2); // Add to map2
+        const womenLayer = L.layerGroup().addTo(map2); // Add to map2
+    
+        function createMarkers() {
+            // Loop through m_by_state and create markers for men
+            for (let i = 0; i < m_by_state.length; i++) {
+                const state = m_by_state[i]; // Get the current state
+                const marker = L.circle([state.lat, state.lon], {
+                    stroke: false,
+                    fillOpacity: 0.75,
+                    color: "yellow",
+                    fillColor: "yellow",
+                    radius: markerSize(state.men) // Assuming markerSize is defined
+                }).bindPopup(`${state.state}: ${state.men} men`);
+    
+                sales_men.push(marker);
+                menLayer.addLayer(marker); // Add marker to menLayer
+            }
+    
+            // Loop through w_by_state and create markers for women
+            for (let i = 0; i < w_by_state.length; i++) {
+                const state = w_by_state[i]; // Get the current state
+                const marker = L.circle([state.lat, state.lon], {
+                    stroke: false,
+                    fillOpacity: 0.75,
+                    color: "green",
+                    fillColor: "green",
+                    radius: markerSize(state.women) // Assuming markerSize is defined
+                }).bindPopup(`${state.state}: ${state.women} women`);
+    
+                sales_women.push(marker);
+                womenLayer.addLayer(marker); // Add marker to womenLayer
+            }
+        }
+    
+        // Call function to create markers
+        createMarkers();
+    
+        // Create a control for the layers
+        const overlayMaps = {
+            "Sales from Men": menLayer,
+            "Sales from Women": womenLayer
+        };
+    
+        // Add layer control to the map
+        L.control.layers(null, overlayMaps).addTo(map2);
+    </script>
+
+</body>
+</html>

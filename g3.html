@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Web Build by Dhani
+     Project 3 Data Engineering
+     Python Data by Ingrid and Jen
+     Gender Mapping Third Page
+     
+     Multi page Build open for future editing-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Leaflet Maps in Grid</title>
+    <link rel="stylesheet" href="https://unpkg.com/leaflet/dist/leaflet.css" />
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="mapstyles.css">
+</head>
+<body>
+    <header>
+        <nav>
+            <div class="logo">P3</div>
+            <ul>
+                <li><a href="p3index.html">Home</a></li>
+                <li>
+                    <a href="gender.html">Gender</a> <!-- summary of genders in data, percentages, -->
+                    <ul class="dropdown">
+                        <li><a href="g1.html">Gender v Age</a></li>
+                        <li><a href="g2.html">Gender v Brand</a></li>
+                        <li><a href="g3.html">Gender v Product</a></li>
+                        <li><a href="g4.html">Gender v Income</a></li>
+                    </ul>
+                </li>
+                <li>
+                    <a href="income.html">Income</a><!--synapsis of data set and how income is portrayed, groupings, percentages across each income level, -->
+                    <ul class="dropdown">
+                        <li><a href="in1.html">Income v Age</a></li>
+                        <li><a href="in2.html">Income v Brand</a></li>
+                        <li><a href="in3.html">Income v Product</a></li> <!-- Maps showing Product Type per Income,-->
+                        <li><a href="in4.html">Map Four</a></li>
+                    </ul>
+                </li>
+                <li><a href="location.html">Location</a>
+                <ul class="dropdown">
+                    <li><a href="l1.html">Location v Age</a></li>
+                    <li><a href="l2.html">Location v Brand</a></li> <!-- Individual HeatMaps Showing for Apple, Samsung, Sony, Other-->
+                    <li><a href="l3.html">Location v Product</a></li> <!--PLace maps showing Product Type, Units Per PT-->
+                    <li><a href="l4.html"></a></li>
+                </ul>
+            </li>
+        </nav>
+    
+    <div class="grid-container">
+        <div class="grid-item">
+            <h2>Map 1</h2>
+            <div id="map1" class="map"></div>
+        </div>
+        <div class="grid-item">
+            <h2>Map 2</h2>
+            <div id="map2" class="map"></div>
+        </div>
+    </div>
+
+    <script src="https://unpkg.com/leaflet/dist/leaflet.js"></script>
+    <script>
+        // Initialize the first map
+        var map1 = L.map('map1').setView([37.0902, -95.7129], 4); // Set initial view to London
+
+        // Add OpenStreetMap tile layer to the first map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map1);
+
+        // Add a marker to the first map
+        var marker1 = L.marker([37.0902, -95.7129]).addTo(map1);
+        marker1.bindPopup('<b>Filler!</b><br>I am a popup.').openPopup();
+
+        // Initialize the second map
+        var map2 = L.map('map2').setView([37.0902, -95.7129 ], 4); // Set initial view to New York
+
+        // Add OpenStreetMap tile layer to the second map
+        L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+            maxZoom: 19,
+            attribution: '© OpenStreetMap'
+        }).addTo(map2);
+
+        // Add a marker to the second map
+        var marker2 = L.marker([41.5834, -72.7622]).addTo(map2);
+        marker2.bindPopup('<b>Top Sales State</b><br>Connecticut:<br> Sales Amount-2,608,310.23 <br> Units Purchased: 100,092').openPopup();
+    </script>
+
+</body>
+</html>
